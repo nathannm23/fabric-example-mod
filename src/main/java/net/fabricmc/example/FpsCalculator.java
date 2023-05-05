@@ -26,7 +26,7 @@ public class FpsCalculator {
         totalElapsed += elapsedTime;
         fps = (int) (1000 / elapsedTime);
         lastTime = currentTime;
-        if(totalElapsed > 1000) {
+        if(totalElapsed >= 1000) {
             fpsStable = fps;
             totalElapsed = 0;
         }

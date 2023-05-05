@@ -3,6 +3,7 @@ package net.fabricmc.example.mixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.example.ExampleMod;
+import net.fabricmc.example.HUD.HUDElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
@@ -26,7 +27,8 @@ public abstract class DisplayMixin {
      */
     @Inject(method = "render", at = @At("TAIL"))
     private void calculateFps(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        ExampleMod.fpsCalculator.update();
+        ExampleMod.fps.update();
+        ExampleMod.location.update();
     }
 
     /*
@@ -36,6 +38,9 @@ public abstract class DisplayMixin {
      */
     @Inject(method = "render", at = @At("TAIL"))
     private void renderFps(MatrixStack matrices, float tickDelta, CallbackInfo info) {
-        this.client.textRenderer.drawWithShadow(matrices, "FPS: " + ExampleMod.fpsCalculator.getFpsStable(), 2, 2, 0xFFFFFF);
+        for(HUDElement element : ExampleMod.hudElements){
+            element.draw(client, matrices);
+        }
+        this.client.textRenderer.drawWithShadow(matrices, "NotEmoji's Coins: " + ExampleMod.purse, 2, 50, 0xFFFFFF);
     }
 }
